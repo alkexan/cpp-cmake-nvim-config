@@ -1,0 +1,16 @@
+require('settings')
+
+require('plugins')
+require('keymaps')
+require('colors')
+
+require('plugins.nvim-tree')
+require('plugins.lsp')
+require('plugins.snippets')
+require('plugins.ibl')
+require('plugins.tagbar')
+require('plugins.mason')
+require('plugins.colorizer')
+require('plugins.comment')
+require('plugins.bufferline')
+require('plugins.toggleterm')
