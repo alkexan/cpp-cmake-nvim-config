@@ -72,6 +72,7 @@ require("lazy").setup({
   { 'hrsh7th/cmp-buffer' },
   { 'hrsh7th/cmp-path' },
   { 'hrsh7th/cmp-cmdline' },
+  { 'hrsh7th/cmp-nvim-lsp-signature-help' }, -- помощь при вводе параметров функций
   { 'saadparwaiz1/cmp_luasnip' },       -- автодополнения для сниппетов
   { 'L3MON4D3/LuaSnip' },                 -- движок сниппетов
 
@@ -86,10 +87,7 @@ require("lazy").setup({
   },
 
   -- Интеграция с CMake
-  {
-    'Civitasv/cmake-tools.nvim',
-    config = function() require("plugins.lsp") end
-  },
+  { 'Civitasv/cmake-tools.nvim' },
 
   { 'nvim-neotest/nvim-nio' },          -- зависимость для dap
 
@@ -98,6 +96,8 @@ require("lazy").setup({
     'mfussenegger/nvim-dap',
     config = function() require("plugins.dap") end
   },
+
+  { 'theHamsta/nvim-dap-virtual-text', config = true }, -- показывает значения переменных прямо в коде
 
   -- Интерфейс для отладчика
   {
@@ -125,12 +125,23 @@ require("lazy").setup({
     end
   },
 
+  -- Автоматическая настройка путей к адаптерам из Mason
+  {
+    'jay-babu/mason-nvim-dap.nvim',
+    dependencies = { 'williamboman/mason.nvim', 'mfussenegger/nvim-dap' },
+    opts = {
+      ensure_installed = { "codelldb", "python" },
+      automatic_installation = true,
+    }
+  },
+
   -- Даже если включена русская раскладка vim команды будут работать
   { "powerman/vim-plugin-ruscmd" },
 
   -- Закрывает автоматом скобки
-  { 'cohama/lexima.vim' },
   { 'RRethy/vim-illuminate' },
+  { 'windwp/nvim-autopairs', event = "InsertEnter", config = true },
+
 
   -- Файловый менеджер
   {
