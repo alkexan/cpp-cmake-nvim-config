@@ -103,26 +103,6 @@ require("lazy").setup({
   {
     'rcarriga/nvim-dap-ui',
     dependencies = { 'mfussenegger/nvim-dap' },
-    config = function()
-        require("dapui").setup()
-        -- Привязка событий dap к dapui
-        --[[
-        vim.api.nvim_create_autocmd("BufEnter", {
-            group = vim.api.nvim_create_augroup("DapUIAutoOpen", { clear = true }),
-            pattern = {"*"},
-            callback = function()
-                require("dapui").open({ reset = true })
-            end,
-        })
-        vim.api.nvim_create_autocmd("BufLeave", {
-            group = vim.api.nvim_create_augroup("DapUIAutoClose", { clear = true }),
-            pattern = {"*"},
-            callback = function()
-                require("dapui").close()
-            end,
-        })
-        --]]
-    end
   },
 
   -- Автоматическая настройка путей к адаптерам из Mason
@@ -130,7 +110,7 @@ require("lazy").setup({
     'jay-babu/mason-nvim-dap.nvim',
     dependencies = { 'williamboman/mason.nvim', 'mfussenegger/nvim-dap' },
     opts = {
-      ensure_installed = { "codelldb", "python" },
+      ensure_installed = { "codelldb", "pyright, cmake-language-server" },
       automatic_installation = true,
     }
   },
