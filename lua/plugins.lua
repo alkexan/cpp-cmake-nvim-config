@@ -48,7 +48,23 @@ require("lazy").setup({
   { 'williamboman/mason.nvim' },
   { "williamboman/mason-lspconfig.nvim" },
   { 'neovim/nvim-lspconfig', },
-  { 'nvim-treesitter/nvim-treesitter' }, -- Улучшенная подсветка синтаксиса
+  {
+    'nvim-treesitter/nvim-treesitter',
+    build = ":TSUpdate",
+    lazy = false,
+    config = function()
+      local is_ok, ts_configs = pcall(require, 'nvim-treesitter')
+      if is_ok then
+        ts_configs.setup({
+          ensure_installed = { "c", "cpp", "cmake", "make", "devicetree", "lua", "python", "bash", "json", "json5" },
+          auto_install = true,
+          highlight = { enable = true },
+        })
+      else
+        vim.notify("nvim-treesitter не доступен: подсветка через treesitter пропущена", vim.log.levels.WARN)
+      end
+    end
+  },
 
   -- Autocomplete
   { 'hrsh7th/nvim-cmp' },

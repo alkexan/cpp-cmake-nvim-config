@@ -5,51 +5,17 @@ if ok_cmp then
   capabilities = cmp_lsp.default_capabilities()
 end
 
--- Настройка подсветки
-local ok_ts, ts_coinfigs = pcall(require, 'nvim-treesitter.configs')
-if ok_ts and ts_configs then
-  ts_configs.setup {
-    -- A list of parser names, or "all"
-    ensure_installed = { "c", "cpp", "cmake", "make", "devicetree","lua", "python", "bash", "json", "json5"},
-    -- Install parsers synchronously (only applied to `ensure_installed`)
-    auto_install = true,
-    highlight = { enable = true },
-  }
-else
-  vim.notify("nvim-treesitter не доступен: подсветка через treesitter пропущена", vim.log.levels.WARN)
-end
+vim.lsp.config('*', { capabilities = capabilities })
 
-local ok_lspconfig, lspconfig = pcall(require, "lspconfig")
-if ok_lspconfig then
-  pcall(function()
-    lspconfig.clangd.setup({
-      cmd = {
-        "clangd",
-        "--background-index",
-        "--compile-commands-dir=build", -- Указать директорию, если она стандартная
-      },
-      capabilities = capabilities,
-      root_dir = lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt", ".git"),
-    })
-  end)
-
-  -- cmake language server
-  pcall(function()
-    lspconfig.cmake.setup({ capabilities = capabilities })
-  end)
-
-  -- python (pyright)
-  pcall(function()
-    lspconfig.pyright.setup({ capabilities = capabilities })
-  end)
-else
-  vim.notify("nvim-lspconfig не доступен: LSP сервера не настроены", vim.log.levels.WARN)
-end
-
--- vim.lsp.config('clangd', { cmd = {"clangd", "--background-index"}, })
--- vim.lsp.enable('clangd')
--- vim.lsp.enable('cmake')
--- vim.lsp.enable('pyright')
+vim.lsp.config('clangd', {
+  cmd = {
+    "clangd",
+     "--background-index",
+     "--compile-commands-dir=build", -- Указать директорию, если она стандартная
+  },
+  root_markers = {"compile_commands.json", "compile_flags.txt", ".git"},
+})
+vim.lsp.enable({'clangd', 'cmake', 'pyright'})
 
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
