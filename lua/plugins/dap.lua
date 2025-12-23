@@ -52,7 +52,8 @@ dap.configurations.rust = dap.configurations.cpp
 -------------------------------------------------------------------------------
 dap.adapters.python = {
   type = 'executable',
-  command = mason_path .. "debugpy-adapter",
+  command = mason_path .. "python3",
+  args = { "-m", "debugpy-adapter"},
 }
 
 dap.configurations.python = {
@@ -80,15 +81,22 @@ local key = vim.keymap.set
 key('n', '<F5>', dap.continue, { desc = 'DAP: Start/Continue' })
 key('n', '<F10>', dap.step_over, { desc = 'DAP: Step Over' })
 key('n', '<F11>', dap.step_into, { desc = 'DAP: Step Into' })
-key('n', '<F12>', dap.step_out, { desc = 'DAP: Step Out' })
-key('n', '<leader>b', dap.toggle_breakpoint, { desc = 'DAP: Toggle Breakpoint' })
+key('n', '<S-F11>', dap.step_out, { desc = 'DAP: Step Out' })
+key('n', '<leader>tb', dap.toggle_breakpoint, { desc = 'DAP: Toggle Breakpoint' })
 key('n', '<leader>B', function() dap.set_breakpoint(vim.fn.input('Условие: ')) end)
 key('n', '<leader>dr', dap.repl.open, { desc = 'DAP: Open REPL' })
 key('n', '<leader>du', dapui.toggle, { desc = 'DAP: Toggle UI' })
+key('n', '<leader>dc', function()
+  dap.terminate()
+  dapui.close()
+end, { desc = 'DAP: Terminate Session' })
+
 
 -------------------------------------------------------------------------------
 -- 5. Красивые иконки (Signs)
 -------------------------------------------------------------------------------
 vim.fn.sign_define('DapBreakpoint', { text='●', texthl='DapBreakpoint', linehl='', numhl='' })
 vim.fn.sign_define('DapStopped', { text='▶', texthl='DapStopped', linehl='DebugHighlight', numhl='' })
+vim.api.nvim_set_hl(0, 'DapBreakpoint', { fg = '#e06c75' })
+vim.api.nvim_set_hl(0, 'DapStopped', { fg = '#98c379', bg = '#31353f' })
 

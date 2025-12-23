@@ -1,5 +1,13 @@
-
-require("toggleterm").setup({})
+require("toggleterm").setup({
+  size = 20,
+  open_mapping = [[<c-\>]], -- Ctrl+\ для быстрого открытия обычного терминала
+  hide_numbers = true,
+  shade_terminals = true,
+  direction = 'horizontal',
+  float_opts = {
+    border = 'curved',
+  },
+})
 
 function _G.set_terminal_keymaps()
   local opts = {buffer = 0}
@@ -12,17 +20,29 @@ function _G.set_terminal_keymaps()
   -- vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], opts)
 end
 
--- if you only want these mappings for toggle term use term://*toggleterm#* instead
-vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
+-- Применяем маппинги только для окон ToggleTerm
+vim.api.nvim_create_autocmd("TermOpen", {
+  pattern = "term://*toggleterm#*",
+  callback = function()
+    set_terminal_keymaps()
+  end,
+})
 
 
--- ToggleTerm
-local map = vim.api.nvim_set_keymap
+-- Lazygit 
 local Terminal  = require('toggleterm.terminal').Terminal
-local lazygit = Terminal:new({ hidden = true, direction="float" })
+local lazygit = Terminal:new({
+  cmd = "lazygit",
+  hidden = true,
+  direction="float"
+})
 
 function _lazygit_toggle()
   lazygit:toggle()
 end
 
-map("n", "tt", "<cmd>lua _lazygit_toggle()<CR>", {noremap = true, silent = true})
+vim.keymap.set("n", "tt", "<cmd>lua _lazygit_toggle()<CR>", {
+  noremap = true,
+  silent = true,
+  desc = "Toggle Lazygit"
+})
