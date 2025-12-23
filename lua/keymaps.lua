@@ -57,16 +57,10 @@ vim.keymap.set('n', '<leader>gs', builtin.git_status, {desc = 'Git status'})
 -- Выбор цветовой схемы
 vim.keymap.set('n', '<leader>cs', builtin.colorscheme, {desc = 'Color scheme'})
 
------------------------------------------------------------
--- Фн. клавиши по F1 .. F12
------------------------------------------------------------
--- <F8>  Показ дерева классов и функций, плагин majutsushi/tagbar
-vim.keymap.set('n', '<F9>', ':TagbarToggle<CR>')
+vim.keymap.set('n', '<F9>', ':TagbarToggle<CR>', {desc = 'Показ дерева классов и функций'})
 
 -- <F12> переключить комментарий в строке
--- vim.keymap.set('n', '<F12>', '<gc>', {})
--- vim.keymap.set('i', '<F12>', '<esc><gc>', {})
-
--- переключить блок комментария для визуального режима
--- vim.keymap.set('v', '<F12>', '<gb>')
+vim.keymap.set('v', '<F12>', 'gb', {remap = true, desc = 'Комментировать строку'})
+vim.keymap.set('n', '<F12>', 'gcc', {remap = true, desc = 'Комментировать строку (вставка)'})
+vim.keymap.set('i', '<F12>', '<esc>gccA', {remap = true, desc = 'Комментировать выделенное'})
 
